@@ -9,11 +9,11 @@ terraform {
 
 
   backend "s3" {
-    bucket = "my-terraformstate-landmark-buc"
+    bucket = "class-magnus-amudi"
     key = "terraform/terraform.tfstate"
-    dynamodb_table = "terraform-lock"
+    dynamodb_table = "terraform-running-locks"
 
-    region = "us-west-1"
+    region = "us-east-1"
 
  }
 }
@@ -33,7 +33,7 @@ terraform {
 }*/
 
 resource "aws_dynamodb_table" "tf_lock" {
-  name = "terraform-lock"
+  name = "terraform-running-locks"
   hash_key = "LockID"
   read_capacity = 3
   write_capacity = 3
@@ -48,6 +48,6 @@ resource "aws_dynamodb_table" "tf_lock" {
 
  # Provider Block
 provider "aws" {
-   region  = "us-west-1"
+   region  = "us-east-1"
    profile = "Kenmak"
  }
