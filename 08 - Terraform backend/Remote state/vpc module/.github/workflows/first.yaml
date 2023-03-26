@@ -1,0 +1,36 @@
+name: terraform jobs
+
+on:
+  - push
+    
+env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESSKEY}}  
+jobs:
+  terraform-workflow:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Set Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.1.9
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform validate
+        run: terraform validate
+      - name: Terraform Plan
+        run: terraform plan
+      - name: release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    #  - name: Terraform Apply
+     #   run: terraform apply -auto-approve
+   #   - name: Terraform Destroy
+     #   run: terraform destroy -auto-approve
