@@ -1,4 +1,4 @@
-name: terraform jobs
+name: shell commands
 
 on:
   - push
